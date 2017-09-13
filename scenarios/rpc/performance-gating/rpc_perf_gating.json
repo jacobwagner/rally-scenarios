@@ -1,0 +1,1004 @@
+{
+  "Authenticate.keystone": [
+    {
+      "args": {},
+      "context": {
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 5
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "Authenticate.validate_cinder": [
+    {
+      "args": {
+        "repetitions": 2
+      },
+      "context": {
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 5
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "Authenticate.validate_glance": [
+    {
+      "args": {
+        "repetitions": 2
+      },
+      "context": {
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 5
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "Authenticate.validate_neutron": [
+    {
+      "args": {
+        "repetitions": 2
+      },
+      "context": {
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 5
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "Authenticate.validate_nova": [
+    {
+      "args": {
+        "repetitions": 2
+      },
+      "context": {
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 5
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "KeystoneBasic.authenticate_user_and_validate_token": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "KeystoneBasic.create_and_delete_role": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "KeystoneBasic.create_and_delete_service": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "KeystoneBasic.create_delete_user": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "KeystoneBasic.create_update_and_delete_tenant": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "GlanceImages.create_and_delete_image": [
+    {
+      "args": {
+        "container_format": "bare",
+        "disk_format": "qcow2",
+        "image_location": "/root/cirros-0.3.4-x86_64-disk.img"
+      },
+      "context": {
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "GlanceImages.create_image_and_boot_instances": [
+    {
+      "args": {
+        "container_format": "bare",
+        "disk_format": "qcow2",
+        "flavor": {
+          "name": "m1.nano"
+        },
+        "image_location": "/root/cirros-0.3.4-x86_64-disk.img",
+        "nics": [
+          {
+            "net-id": "8f7eb2cd-7a45-4ee8-831d-97ce59fd00f8"
+          }
+        ],
+        "number_instances": 2
+      },
+      "context": {
+        "quotas": {
+          "nova": {
+            "cores": -1,
+            "instances": -1,
+            "ram": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 5
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "GlanceImages.list_images": [
+    {
+      "args": {},
+      "context": {
+        "images": {
+          "image_container": "bare",
+          "image_type": "qcow2",
+          "image_url": "/root/cirros-0.3.4-x86_64-disk.img",
+          "images_per_tenant": 4
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "NovaServers.boot_and_delete_server": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {},
+      "sla": {}
+    }
+  ],
+  "NovaServers.boot_server_and_attach_interface": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {},
+      "sla": {}
+    }
+  ],
+  "NovaServers.boot_server_associate_and_disassociate_floating_ip": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {},
+      "sla": {}
+    }
+  ],
+  "NovaServers.boot_server_attach_volume_and_list_attachments": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {},
+      "sla": {}
+    }
+  ],
+  "NovaServers.boot_server_from_volume_and_delete": [
+    {
+      "args": {
+        "flavor": {
+          "name": "m1.nano"
+        },
+        "force_delete": true,
+        "image": {
+          "name": "^cirros$"
+        },
+        "nics": [
+          {
+            "net-id": "8f7eb2cd-7a45-4ee8-831d-97ce59fd00f8"
+          }
+        ],
+        "volume_size": 1,
+        "volume_type": "block_tier_1"
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          },
+          "nova": {
+            "cores": -1,
+            "instances": -1,
+            "ram": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    },
+    {
+      "args": {
+        "flavor": {
+          "name": "m1.nano"
+        },
+        "force_delete": true,
+        "image": {
+          "name": "^cirros$"
+        },
+        "nics": [
+          {
+            "net-id": "8f7eb2cd-7a45-4ee8-831d-97ce59fd00f8"
+          }
+        ],
+        "volume_size": 1,
+        "volume_type": "solid_state_tier_1"
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          },
+          "nova": {
+            "cores": -1,
+            "instances": -1,
+            "ram": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "NovaServers.snapshot_server": [
+    {
+      "args": {
+        "flavor": {
+          "name": "m1.nano"
+        },
+        "force_delete": true,
+        "image": {
+          "name": "^cirros$"
+        },
+        "nics": [
+          {
+            "net-id": "8f7eb2cd-7a45-4ee8-831d-97ce59fd00f8"
+          }
+        ]
+      },
+      "context": {
+        "quotas": {
+          "nova": {
+            "cores": -1,
+            "instances": -1,
+            "ram": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "NeutronNetworks.create_and_delete_floating_ips": [
+    {
+      "args": {
+        "floating_ip_args": {},
+        "floating_network": "Public_Agile_Floating_v4"
+      },
+      "context": {
+        "quotas": {
+          "neutron": {
+            "floatingip": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 0
+        }
+      }
+    }
+  ],
+  "NeutronNetworks.create_and_delete_networks": [
+    {
+      "args": {
+        "network_create_args": {}
+      },
+      "context": {
+        "quotas": {
+          "neutron": {
+            "network": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 5
+        }
+      }
+    }
+  ],
+  "NeutronNetworks.create_and_delete_ports": [
+    {
+      "args": {
+        "network_create_args": {},
+        "port_create_args": {},
+        "ports_per_network": 10
+      },
+      "context": {
+        "network": {},
+        "quotas": {
+          "neutron": {
+            "network": -1,
+            "port": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "NeutronNetworks.create_and_delete_routers": [
+    {
+      "args": {
+        "network_create_args": {},
+        "router_create_args": {},
+        "subnet_cidr_start": "172.16.1.0/30",
+        "subnet_create_args": {},
+        "subnets_per_network": 2
+      },
+      "context": {
+        "network": {},
+        "quotas": {
+          "neutron": {
+            "network": -1,
+            "port": -1,
+            "router": -1,
+            "subnet": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "NeutronNetworks.create_and_delete_subnets": [
+    {
+      "args": {
+        "network_create_args": {},
+        "subnet_cidr_start": "172.16.1.0/30",
+        "subnet_create_args": {},
+        "subnets_per_network": 2
+      },
+      "context": {
+        "network": {},
+        "quotas": {
+          "neutron": {
+            "network": -1,
+            "port": -1,
+            "subnet": -1
+          }
+        },
+        "users": {
+          "tenants": 3,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 5
+        }
+      }
+    }
+  ],
+  "NeutronNetworks.create_and_update_ports": [
+    {
+      "args": {
+        "network_create_args": {},
+        "port_create_args": {},
+        "port_update_args": {
+          "admin_state_up": false,
+          "device_id": "dummy_id",
+          "device_owner": "dummy_owner",
+          "name": "_port_updated"
+        },
+        "ports_per_network": 5
+      },
+      "context": {
+        "network": {},
+        "quotas": {
+          "neutron": {
+            "network": -1,
+            "port": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 3
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "CinderVolumes.create_and_attach_volume": [
+    {
+      "args": {
+        "create_volume_params": {
+          "availability_zone": "nova"
+        },
+        "flavor": {
+          "name": "m1.nano"
+        },
+        "image": {
+          "name": "^cirros$"
+        },
+        "nics": [
+          {
+            "net-id": "8f7eb2cd-7a45-4ee8-831d-97ce59fd00f8"
+          }
+        ],
+        "size": 10
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          },
+          "nova": {
+            "cores": -1,
+            "instances": -1,
+            "ram": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "CinderVolumes.create_and_delete_snapshot": [
+    {
+      "args": {
+        "force": false
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        },
+        "volumes": {
+          "size": 1
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "CinderVolumes.create_and_delete_volume": [
+    {
+      "args": {
+        "size": 1
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    },
+    {
+      "args": {
+        "size": {
+          "max": 5,
+          "min": 1
+        }
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "CinderVolumes.create_and_upload_volume_to_image": [
+    {
+      "args": {
+        "container_format": "bare",
+        "disk_format": "raw",
+        "do_delete": true,
+        "force": false,
+        "image": {
+          "name": "^cirros$"
+        },
+        "size": 1
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    },
+    {
+      "args": {
+        "container_format": "bare",
+        "disk_format": "raw",
+        "do_delete": true,
+        "force": false,
+        "image": {
+          "name": "^cirros$"
+        },
+        "size": {
+          "max": 5,
+          "min": 1
+        }
+      },
+      "context": {
+        "quotas": {
+          "cinder": {
+            "gigabytes": -1,
+            "snapshots": -1,
+            "volumes": -1
+          }
+        },
+        "users": {
+          "tenants": 2,
+          "users_per_tenant": 2
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "SwiftObjects.create_container_and_object_then_delete_all": [
+    {
+      "args": {
+        "object_size": 102400,
+        "objects_per_container": 5
+      },
+      "context": {
+        "roles": [
+          "user"
+        ],
+        "users": {
+          "tenants": 1,
+          "users_per_tenant": 1
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "SwiftObjects.create_container_and_object_then_download_object": [
+    {
+      "args": {
+        "object_size": 1024,
+        "objects_per_container": 5
+      },
+      "context": {
+        "roles": [
+          "user"
+        ],
+        "users": {
+          "tenants": 1,
+          "users_per_tenant": 1
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "SwiftObjects.create_container_and_object_then_list_objects": [
+    {
+      "args": {
+        "object_size": 5120,
+        "objects_per_container": 2
+      },
+      "context": {
+        "roles": [
+          "user"
+        ],
+        "users": {
+          "tenants": 1,
+          "users_per_tenant": 1
+        }
+      },
+      "hooks": [],
+      "runner": {
+        "concurrency": 5,
+        "times": 5,
+        "type": "constant"
+      },
+      "sla": {
+        "failure_rate": {
+          "max": 10
+        }
+      }
+    }
+  ],
+  "SwiftObjects.list_and_download_objects_in_containers": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {},
+      "sla": {}
+    }
+  ],
+  "SwiftObjects.list_objects_in_containers": [
+    {
+      "args": {},
+      "context": {},
+      "hooks": [],
+      "runner": {},
+      "sla": {}
+    }
+  ]
+}

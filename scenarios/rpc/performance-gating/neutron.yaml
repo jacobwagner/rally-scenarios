@@ -1,0 +1,146 @@
+{% set floating_network = floating_network or "public"}
+---
+  NeutronNetworks.create_and_delete_floating_ips:
+    -
+      args:
+        floating_network: "{{floating_network}}"
+        floating_ip_args: {}
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            floatingip: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_networks:
+    -
+      args:
+        network_create_args: {}
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_ports:
+    -
+      args:
+        network_create_args: {}
+        port_create_args: {}
+        ports_per_network: 10
+      context:
+        network: {}
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            port: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 100
+        concurrency: 10
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_routers:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        subnets_per_network: 2
+        router_create_args: {}
+      context:
+        network: {}
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+            router: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_subnets:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        subnets_per_network: 2
+      context:
+        network: {}
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_update_ports:
+    -
+      args:
+        network_create_args: {}
+        port_create_args: {}
+        ports_per_network: 5
+        port_update_args:
+            admin_state_up: False
+            device_id: "dummy_id"
+            device_owner: "dummy_owner"
+            name: "_port_updated"
+      context:
+        network: {}
+        users:
+          tenants: 2
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            port: -1
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+

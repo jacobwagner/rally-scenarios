@@ -1,0 +1,143 @@
+{% set flavor_name = flavor_name or "m1.tiny" %}
+{% set image_name = image_name or "cirros"}
+{% set volume_type = volume_type or "" %}
+{% set volume_size = volume_size or "1" %}
+---
+  NovaServers.boot_and_delete_server:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        force_delete: false
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_and_attach_interface:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        boot_server_args: {}
+      context:
+        network: {}
+        users:
+          tenants: 2
+          users_per_tenant: 2
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_associate_and_dissociate_floating_ip:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+        network: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_attach_volume_and_list_attachments:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        volume_size: 1
+        volume_num: 2
+        boot_server_kwargs: {}
+        create_volume_kwargs: {}
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_from_volume_and_delete:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        volume_size: ""{{volume_size}}
+        volume_type: "{{volume_type}}"
+        force_delete: false
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.snapshot_server:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        force_delete: false
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0

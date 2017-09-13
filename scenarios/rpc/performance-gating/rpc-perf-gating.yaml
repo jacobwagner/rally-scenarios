@@ -1,0 +1,685 @@
+{% set flavor_name = flavor_name or "m1.tiny" %}
+{% set image_name = image_name or "cirros"}
+{% set image_url = image_url or "http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img"}
+{% set floating_network = floating_network or "public"}
+{% set volume_type = volume_type or "" %}
+{% set volume_size = volume_size or "1" %}
+{% set availability_zone = availability_zone or "nova" %}
+
+---
+  Authenticate.keystone:
+    -
+      args: {}
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  Authenticate.validate_cinder:
+    -
+      args:
+        repetitions: 2
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  Authenticate.validate_glance:
+    -
+      args:
+        repetitions: 2
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  Authenticate.validate_neutron:
+    -
+      args:
+        repetitions: 2
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  Authenticate.validate_nova:
+    -
+      args:
+        repetitions: 2
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.authenticate_user_and_validate_token:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_and_delete_role:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_and_delete_service:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_delete_user:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_update_and_delete_tenant:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+  GlanceImages.create_and_delete_image:
+    -
+      args:
+        image_location: "{{image_url}}"
+        container_format: "bare"
+        disk_format: "qcow2"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 3
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 10
+
+  GlanceImages.create_image_and_boot_instances:
+    -
+      args:
+        image_location: "{{image_url}}"
+        container_format: "bare"
+        disk_format: "qcow2"
+        flavor:
+          name: "{{flavor_name}}"
+        number_instances: 2
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 5
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 10
+
+  GlanceImages.list_images:
+    -
+      args: {}
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+        images:
+          image_url: "{{image_url}}"
+          disk_format: "qcow2"
+          container_format: "bare"
+          images_per_tenant: 4
+      hooks: []
+      runner:
+        type: "constant"
+        times: 10
+        concurrency: 1
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_floating_ips:
+    -
+      args:
+        floating_network: "{{floating_network}}"
+        floating_ip_args: {}
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            floatingip: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_networks:
+    -
+      args:
+        network_create_args: {}
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_ports:
+    -
+      args:
+        network_create_args: {}
+        port_create_args: {}
+        ports_per_network: 10
+      context:
+        network: {}
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            port: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 100
+        concurrency: 10
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_routers:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        subnets_per_network: 2
+        router_create_args: {}
+      context:
+        network: {}
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+            router: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_delete_subnets:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        subnets_per_network: 2
+      context:
+        network: {}
+        users:
+          tenants: 3
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NeutronNetworks.create_and_update_ports:
+    -
+      args:
+        network_create_args: {}
+        port_create_args: {}
+        ports_per_network: 5
+        port_update_args:
+            admin_state_up: False
+            device_id: "dummy_id"
+            device_owner: "dummy_owner"
+            name: "_port_updated"
+      context:
+        network: {}
+        users:
+          tenants: 2
+          users_per_tenant: 3
+        quotas:
+          neutron:
+            network: -1
+            port: -1
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_and_delete_server:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        force_delete: false
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_and_attach_interface:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        boot_server_args: {}
+      context:
+        network: {}
+        users:
+          tenants: 2
+          users_per_tenant: 2
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_associate_and_dissociate_floating_ip:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+        network: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_attach_volume_and_list_attachments:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        volume_size: 1
+        volume_num: 2
+        boot_server_kwargs: {}
+        create_volume_kwargs: {}
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.boot_server_from_volume_and_delete:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        volume_size: ""{{volume_size}}
+        volume_type: "{{volume_type}}"
+        force_delete: false
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  NovaServers.snapshot_server:
+    -
+      args:
+        flavor:
+            name: "{{flavor_name}}"
+        image:
+            name: "{{image_name}}"
+        force_delete: false
+      context:
+        users:
+          tenants: 3
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_attach_volume:
+    -
+      args:
+          size: "{{volume_size}}"
+          image:
+            name: "{{image_name}}"
+          flavor:
+            name: "{{flavor_name}}"
+          create_volume_params:
+            availability_zone: "{{availability_zone}}"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_delete_snapshot:
+    -
+      args:
+          force: false
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+        volumes:
+          size: 1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_delete_volume:
+    -
+      args:
+        size: "{{volume_size}}"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_upload_volume_to_image:
+    -
+      args:
+        size: "{{volume_size}}"
+        force: false
+        container_format: "bare"
+        disk_format: "raw"
+        do_delete: true
+        image:
+          name: "{{image_name}}"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  SwiftObjects.create_container_and_object_then_delete_all:
+    -
+      args:
+        objects_per_container: 5
+        object_size: 102400
+      context:
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        roles:
+          - "admin"
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  SwiftObjects.create_container_and_object_then_download_object:
+    -
+      args:
+        objects_per_container: 5
+        object_size: 1024
+      context:
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        roles:
+          - "admin"
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  SwiftObjects.create_container_and_object_then_list_objects:
+    -
+      args:
+        objects_per_container: 2
+        object_size: 5120
+      context:
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        roles:
+          - "admin"
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  SwiftObjects.list_and_download_objects_in_containers:
+    -
+     args: {}
+     context:
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        roles:
+          - "admin"
+        swift_objects:
+          containers_per_tenant: 2
+          objects_per_container: 5
+          object_size: 10240
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  SwiftObjects.list_objects_in_containers:
+    -
+      args: {}
+      context:
+        users:
+          tenants: 1
+          users_per_tenant: 1
+        roles:
+          - "admin"
+        swift_objects:
+          containers_per_tenant: 1
+          objects_per_container: 10
+          object_size: 1024
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0

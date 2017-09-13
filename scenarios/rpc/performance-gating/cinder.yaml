@@ -1,0 +1,84 @@
+{% set volume_size = volume_size or "10"}
+{% set flavor_name = flavor_name or "m1.tiny" %}
+{% set image_name = image_name or "cirros"}
+{% set availability_zone = availability_zone or "nova" %}
+---
+  CinderVolumes.create_and_attach_volume:
+    -
+      args:
+          size: "{{volume_size}}"
+          image:
+            name: "{{image_name}}"
+          flavor:
+            name: "{{flavor_name}}"
+          create_volume_params:
+            availability_zone: "{{availability_zone}}"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_delete_snapshot:
+    -
+      args:
+          force: false
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+        volumes:
+          size: 1
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_delete_volume:
+    -
+      args:
+        size: "{{volume_size}}"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  CinderVolumes.create_and_upload_volume_to_image:
+    -
+      args:
+        size: "{{volume_size}}"
+        force: false
+        container_format: "bare"
+        disk_format: "raw"
+        do_delete: true
+        image:
+          name: "{{image_name}}"
+      context:
+        users:
+          tenants: 2
+          users_per_tenant: 2
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0

@@ -1,0 +1,37 @@
+# This simply creates and updates a router by setting its admin state to False
+# It doesnt actually move the router and rebuild all iptables, etc.
+# We need to investigate how to properly do this in Rally
+# It may mean creating our own context and scenario
+# jwagner
+
+{% set tenants = tenants or 3 %}
+{% set users = users or 2 %}
+---
+  NeutronNetworks.create_and_update_routers:
+    -
+      args:
+        network_create_args: {}
+        subnet_create_args: {}
+        subnet_cidr_start: "1.1.0.0/30"
+        subnets_per_network: 2
+        router_create_args: {}
+        router_update_args:
+            admin_state_up: False
+            name: "_router_updated"
+      runner:
+        type: "constant"
+        times: 10
+        concurrency: 5
+      context:
+        network: {}
+        users:
+          tenants: "{{tenants}}"
+          users_per_tenant: "{{users}}"
+        quotas:
+          neutron:
+            network: -1
+            subnet: -1
+            router: -1
+      sla:
+        failure_rate:
+          max: 0

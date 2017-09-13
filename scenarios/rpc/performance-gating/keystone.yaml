@@ -1,0 +1,65 @@
+---
+  KeystoneBasic.authenticate_user_and_validate_token:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_and_delete_role:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_and_delete_service:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_delete_user:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
+
+  KeystoneBasic.create_update_and_delete_tenant:
+    -
+      args: {}
+      context: {}
+      hooks: []
+      runner:
+        type: "constant"
+        times: 5
+        concurrency: 5
+      sla:
+        failure_rate:
+          max: 0
